@@ -16,9 +16,10 @@ pipeline {
                 sh 'mvn test'
             }
         }
-        stage('Deliver') {
+        stage ('deploy to remote tomcat') {
             steps {
-                sh './jenkins/scripts/deliver.sh'
+                deploy adapters: [tomcat8(credentialsId: 'b67257f4-2d8d-4870-9863-b3b98a87ba06', url: 'http://192.168.5.190:8080')], 
+                contextPath: '/', war: '**/*.war'
             }
         }
     }
