@@ -1,5 +1,7 @@
 pipeline {
     agent {
+        parameters {
+        choice(name: 'ENV_TYPE', choices: ['test', 'dev', 'product'], description: 'test means test env,….')
         docker {
             image 'maven:3-alpine'
             args '-v /root/.m2:/root/.m2'
@@ -9,6 +11,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'mvn -B -DskipTests clean package'
+                sh 'echo ${ENV_TYPE}'
             }
         }
         stage('Test') {
