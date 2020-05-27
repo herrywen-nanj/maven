@@ -3,7 +3,7 @@ pipeline {
         docker {
             image 'maven:3-alpine'
             args '-v /root/.m2:/root/.m2'
-            registryUrl 'https://hub.daocloud.io/'
+            registryUrl 'registry.cn-hangzhou.aliyuncs.com/houzigang/maven:3-alpine'
         }
     }
     environment { 
