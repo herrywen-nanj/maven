@@ -5,6 +5,9 @@ pipeline {
             args '-v /root/.m2:/root/.m2'
         }
     }
+    environment { 
+        ANSIBLE_HOST_DIR = '/etc/ansible/delivery'
+    }
     stages {
         stage('Build') {
             steps {
@@ -13,12 +16,17 @@ pipeline {
         }
         stage('build docker image') {
             steps {
-                sh './jenkins/scripts/build.sh'
+                sh './build.sh'
             }
         }
         stage('Ansible remote deploy') {
             steps {
-                sh 'ansible -i $ANSIBLE_HOST_DIR $ANSIBLE_HOST_NAME  -m shell -a "cd $CODE_DIR/$GIT_NAME;docker"'
+                sh 'ansible -i $ANSIBLE_HOST_DIR $ENV  -m shell -a "docker ps -a -q"'
+            }
+        }
+        stage('test environment') {
+            steps {
+                sh 'echo "环境变量是$ANSIBLE_HOST_DIR $ENV"'
             }
         }
     }
