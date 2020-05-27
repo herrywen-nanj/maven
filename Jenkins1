@@ -16,7 +16,7 @@ pipeline {
         }
         stage('build docker image') {
             steps {
-                sh './build.sh'
+                sh 'chmod 777 build.sh && ./build.sh'
             }
         }
         stage('test environment') {
