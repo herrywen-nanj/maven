@@ -6,7 +6,7 @@ pipeline {
         }
     }
     environment { 
-        ANSIBLE_HOST_DIR = '/etc/ansible/delivery'
+        def ANSIBLE_HOST_DIR = '/etc/ansible/delivery'
     }
     stages {
         stage('Build') {
@@ -17,11 +17,6 @@ pipeline {
         stage('build docker image') {
             steps {
                 sh './build.sh'
-            }
-        }
-        stage('Ansible remote deploy') {
-            steps {
-                sh 'ansible -i $ANSIBLE_HOST_DIR $ENV  -m shell -a "docker ps -a -q"'
             }
         }
         stage('test environment') {
