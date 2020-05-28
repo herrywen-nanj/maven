@@ -14,14 +14,16 @@ pipeline {
                 sh 'mvn -B -DskipTests clean package'
             }
         }
-        stage('build docker image') {
+        stage('build docker image and push tecent cloud') {
             steps {
                 sh 'chmod 777 build.sh && ./build.sh'
             }
         }
-        stage('test environment') {
+        stage('excute scripts to deploy machine') {
             steps {
-                sh 'echo "环境变量是$ANSIBLE_HOST_DIR $ENV"'
+                sh 'ansible $ENV -i hosts -m shell -a "docker rm -f $(docker ps -a -q)"'
+                sh 'ansible $ENV -i hosts -m shell -a "docker rmi $(docker images -q)"'
+                sh 'ansible $ENV -i hosts -m shell -a "docker run -dit --privileged=true --cap-add SYS_ADMIN -p 8083:8090 --name jenkins registry.cn-hangzhou.aliyuncs.com/houzigang/sqhx_java:latest"'
             }
         }
     }
