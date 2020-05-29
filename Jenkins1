@@ -16,7 +16,8 @@ pipeline {
         }
         stage('build docker image and push tecent cloud') {
             steps {
-                sh 'chmod 777 build.sh && ./build.sh'
+                sh 'docker --version'
+                sh 'rsync --version'
             }
         }
         stage('excute scripts to deploy machine') {
