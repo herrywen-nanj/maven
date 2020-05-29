@@ -23,7 +23,6 @@ pipeline {
         }
         stage('excute scripts to deploy machine') {
             steps {
-                sh 'ls -l /usr/bin/ansible'
                 sh 'ansible $ENV -i hosts -m shell -a "docker rm -f $(docker ps -a -q)"'
                 sh 'ansible $ENV -i hosts -m shell -a "docker rmi $(docker images -q)"'
                 sh 'ansible $ENV -i hosts -m shell -a "docker run -dit --privileged=true --cap-add SYS_ADMIN -p 6:6 --name sqhx ccr.ccs.tencentyun.com/miwan/sqhx_java:latest"'
